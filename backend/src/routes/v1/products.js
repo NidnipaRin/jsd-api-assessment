@@ -13,7 +13,7 @@ router.get("/", (req, res, next) => {
       const filteredProducts = products.filter((p) =>
         p.name.toLowerCase().includes(search.toLowerCase()),
       );
-      return res.json(filteredProducts);
+      return res.status(200).json(filteredProducts);
     }
 
     // ถ้าไม่มี search ส่งมา ก็คืนค่า products ทั้งหมด
@@ -33,6 +33,32 @@ router.get("/:id", (req, res, next) => {
     }
 
     return res.status(200).json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Create product
+router.post("/", (req, res, next) => {
+  try {
+    const { name, price, quantity } = req.body;
+
+    // ใส่ข้อมูลตอนเพิ่มสินค้าไม่ครบ
+    if (!name || price == null) {
+      return res.status(400).json({ error: "Name and price are required" });
+    }
+
+    const newProduct = {
+      id: String(Date.now()), // สร้าง ID ด้วย timestamp
+      name: name,
+      price: Number(price),
+      quantity: quantity != null ? Number(quantity) : 1, // ถ้าไม่ส่ง quantity ให้เป็น 1
+    };
+
+    // ถ้าใส่ครบจะข้ามมาขั้นตอนนี้
+    products.push(newProduct);
+
+    return res.status(201).json(newProduct);
   } catch (err) {
     next(err);
   }

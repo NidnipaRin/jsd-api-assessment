@@ -1,0 +1,69 @@
+### Variables
+@baseUrl = http://localhost:3001/api/v1/products
+
+### Read All Products (ดึงสินค้าทั้งหมด)
+GET {{baseUrl}}
+
+
+### Search Products (ค้นหาสินค้าตามคำว่า Baby เปลี่ยนคำได้ตามที่อยากหา)
+GET {{baseUrl}}?search=Baby
+
+
+
+### Read Product by ID (ดึงสินค้า ID 1 - Rocky Dragon Rocking Horse เปลี่ยนเลข ID ได้ตามที่อยากหา)
+GET {{baseUrl}}/1
+
+
+
+### Create Product (สร้างสินค้าใหม่)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Silicone Baby Teether Toy",
+  "price": 180,
+  "quantity": 20
+}
+
+### Create Product (สร้างสินค้าใหม่ แบบไม่ส่งจำนวนสินค้า)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Baby Towel",
+  "price": 180
+}
+
+
+
+### Create Product Validation Error (ทดสอบส่งข้อมูลไม่ครบ -> ได้คำตอบเป็นเลข 400)
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Baby Bib"
+}
+
+
+###  Update Product (แก้ไขสินค้า ID 2 - เปลี่ยนราคาและจำนวน)
+PUT {{baseUrl}}/2
+Content-Type: application/json
+
+{
+  "name": "Suction Silicone Baby Bowl with Spoon Set",
+  "price": 320,
+  "quantity": 12
+}
+
+###  Update Product (แก้ไขสินค้า ID 2 - เปลี่ยนราคา แต่ไม่ใส่จำนวน จำนวนต้องออกมาเท่าเดิม)
+PUT {{baseUrl}}/2
+Content-Type: application/json
+
+{
+  "name": "Suction Silicone Baby Bowl with Spoon Set",
+  "price": 350
+}
+
+
+### 7. Delete Product (ลองลบสินค้า ID 4 - Organic Water Baby Wipes เปลี่ยนเลขได้)
+DELETE {{baseUrl}}/4

@@ -69,22 +69,22 @@ router.put("/:id", (req, res, next) => {
   try {
     const product = products.find((p) => p.id === req.params.id);
 
-    //ในกรณีหา id ไม่เจอ
+    // ในกรณีหา id ไม่เจอ
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
 
     const { name, price, quantity } = req.body;
 
-    //ในกรณีใส่ข้อมูลไม่ครบตอนอัพเดท
+    // ในกรณีใส่ข้อมูลไม่ครบตอนอัปเดต
     if (!name || price == null) {
       return res.status(400).json({ error: "Name and price are required" });
     }
 
-    //ถ้าใส่ครบจะมาอัพเดทตรงนี้
+    // ถ้าใส่ครบจะมาอัปเดตตรงนี้
     product.name = name;
     product.price = Number(price);
-    product.quantity = Number(quantity);
+    product.quantity = quantity != null ? Number(quantity) : product.quantity;
 
     return res.status(200).json(product);
   } catch (err) {

@@ -1,9 +1,18 @@
 import express from "express";
 import { router as apiRoutes } from "./routes/index.js";
+import cors from "cors";
 
 const app = express();
 
+app.use(cors());
+
 app.use(express.json());
+
+// Custom Middleware: Request Logger
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 
 // หน้า Landing Page
 app.get("/", (req, res) => {

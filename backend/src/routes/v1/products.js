@@ -63,3 +63,48 @@ router.post("/", (req, res, next) => {
     next(err);
   }
 });
+
+// Update Product (PUT /:id)
+router.put("/:id", (req, res, next) => {
+  try {
+    const product = products.find((p) => p.id === req.params.id);
+
+    //ในกรณีหา id ไม่เจอ
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const { name, price, quantity } = req.body;
+
+    //ในกรณีใส่ข้อมูลไม่ครบตอนอัพเดท
+    if (!name || price == null) {
+      return res.status(400).json({ error: "Name and price are required" });
+    }
+
+    //ถ้าใส่ครบจะมาอัพเดทตรงนี้
+    product.name = name;
+    product.price = Number(price);
+    product.quantity = Number(quantity);
+
+    return res.status(200).json(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete Product (DELETE /:id)
+router.delete("/:id", (req, res, next) => {
+  try {
+    const index = products.findIndex((p) => p.id === req.params.id);
+
+    if (index === -1) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const [deleted] = products.splice(index, 1);
+
+    return res.status(200).json(deleted);
+  } catch (err) {
+    next(err);
+  }
+});
